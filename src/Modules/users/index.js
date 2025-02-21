@@ -16,7 +16,6 @@ const typeDefs = gql`
         username: String!
         email: String!
         password: String!
-        createdAt: String!
         role: String!
     }
     type Auth {

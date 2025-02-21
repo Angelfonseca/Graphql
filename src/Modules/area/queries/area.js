@@ -33,4 +33,18 @@ const getModulesData = async (_, { id }) => {
     return modulesData;
 };
 
-module.exports = {getbyId, getModulesData};
+const getModulesDataTimeRange = async (_, { id, start, end }) => {
+    const area = await Area.findById(id);
+    if (!area) {
+        throw new Error('Area not found');
+    }
+    const modulesDataPromises = area.modules.map(async (module) => {
+        const sensors = await Sensor.find({ module, createdAt: { $gte: start, $lte: end } }).sort({ createdAt: -1 });
+        return { module, sensors: sensors || [] };
+    }
+    );
+    const modulesData = await Promise.all(modulesDataPromises);
+    return modulesData;
+}
+
+module.exports = {getbyId, getModulesData, getModulesDataTimeRange};

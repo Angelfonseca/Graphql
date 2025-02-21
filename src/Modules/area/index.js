@@ -30,7 +30,9 @@ const typeDefs = gql`
         area(id: ID!): Area
         areas: [Area]
         areaWithModules(id: ID!): [ModuleData]
+        areaWithModulesTimeRange(id: ID!, start: String!, end: String!): [ModuleData]
     }
+
 
     extend type Mutation {
         createArea(name: String!, description: String, modules: [String]): Area
@@ -49,7 +51,7 @@ function filterAreaUpdated(payload) {
     return payload;
 }
 
-function filterSensorUpdated(payload) {
+function filterAreaUpdated(payload) {
     return payload;
 }
 
@@ -58,6 +60,7 @@ const resolvers = {
         area: area.getbyId,
         areas,
         areaWithModules: area.getModulesData,
+        areaWithModulesTimeRange: area.getModulesDataTimeRange
     },
     Mutation: {
         createArea,
